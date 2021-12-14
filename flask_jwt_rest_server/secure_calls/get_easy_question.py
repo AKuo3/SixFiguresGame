@@ -35,4 +35,4 @@ def handle_request():
     question_correctAnswer = question[6]
     print("Successfully got easy question.")
 
-    return json_response(question_info = {'question_id': question_id,'question_text':question_text,'question_answerA': question_answerA,'question_answerB':question_answerB,'question_answerC':question_answerC,'question_answerD':question_answerD,'question_correctAnswer':question_correctAnswer})
+    return json_response(token = create_token(g.jwt_data), question_info = {'question_id': question_id,'question_text':question_text,'question_answerA': question_answerA,'question_answerB':question_answerB,'question_answerC':question_answerC,'question_answerD':question_answerD,'question_correctAnswer':question_correctAnswer})
