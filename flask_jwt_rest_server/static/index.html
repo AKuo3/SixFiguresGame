@@ -21,7 +21,11 @@
 			document.getElementById("welcome_screen").style.display = "none";
 			document.getElementById("main_game_screen").style.display = "inline";
 			document.getElementById("dollar_amount").innerHTML = current_prize_amount;
-			get_easy_question();
+			$.post("/open_api/setup", {}, function (data) {
+				console.log(data.token);
+				jwt = data.token;
+                get_easy_question();
+			});
 		}
 
 		function get_easy_question() {
