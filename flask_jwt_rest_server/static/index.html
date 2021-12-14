@@ -13,11 +13,14 @@
 		var used_hard_questions = new Array();
 		var current_question_id = 0;
 		var current_question_difficulty = "easy";
-		var current_prize_amount = 100;
+		var current_question_number = 0;
+        var prize_order = ["$500", "$1,000", "$2,000", "$3,000", "$5,000", "$7,000", "$10,000", "$20,000", "$30,000", "$50,000", "$100,000", "$250,000", "$500,000","$1 Million"];
+		var current_prize_amount = prize_order[0];
 
 		function initial_game_load() {
 			document.getElementById("welcome_screen").style.display = "none";
 			document.getElementById("main_game_screen").style.display = "inline";
+			document.getElementById("dollar_amount").innerHTML = current_prize_amount;
 			get_easy_question();
 		}
 
@@ -45,7 +48,7 @@
 			<button id="load_game_menu" onclick="initial_game_load();" >Start Game</button>
 	    </div>
 		<div id="main_game_screen" style="display:none">
-			<p>Here is your question:</p>
+			<p>For <span id="dollar_amount"></span>, Here is your question:</p>
 			<p id="question_text">DEFAULT QUESTION TEXT</p>
 			<br />
 			<form>
