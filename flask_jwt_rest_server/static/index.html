@@ -15,22 +15,6 @@
 		var current_question_difficulty = "easy";
 		var current_prize_amount = 100;
 
-		function get_books(){
-			//make secure call with the jwt
-			secure_get_with_token("/secure_api/get_books", {} , function(data){
-			console.log("got books"); 
-			console.log(data); 
-			$('#buybook').show();
-			},
-            function(err){ console.log(err) });
-		}
-
-        function buy_book(book_id){
-			//make secure call with the jwt
-			secure_get_with_token("/secure_api/get_books", {"book_id" : book_id} , function(data){console.log("got books"); console.log(data)},
-			function(err){ console.log(err) });
-		}
-
 		function initial_game_load() {
 			document.getElementById("welcome_screen").style.display = "none";
 			document.getElementById("main_game_screen").style.display = "inline";
@@ -38,13 +22,14 @@
 		}
 
 		function get_easy_question() {
-			$.post("/secure_api/get_easy_question", function (data) {
+			secure_post_with_token("/secure_api/get_easy_question", {"used_easy_questions": used_easy_questions}, function (data) {
 				current_question_id = data.question_info.question_id;
+				used_easy_questions.push(current_question_id);
 				$('#question_text').html(data.question_info.question_text);
 				$('#answer_A').html(data.question_info.question_answerA);
 				$('#answer_B').html(data.question_info.question_answerB);
 				$('#answer_C').html(data.question_info.question_answerC);
-                $('#answer_D').html(data.question_info.question_answerD);
+				$('#answer_D').html(data.question_info.question_answerD);
 			},
 				function (err) { console.log(err) });
 		}

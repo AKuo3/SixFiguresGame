@@ -8,6 +8,7 @@ global_db_con = get_db()
 from tools.logging import logger
 
 def handle_request():
+    #todo: implement
     logger.debug("Get Easy Question Handle Request")
     cur = global_db_con.cursor()
     used_questions = request.args.get("used_questions")
