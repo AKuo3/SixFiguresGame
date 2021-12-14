@@ -32,11 +32,11 @@
 			secure_post_with_token("/secure_api/get_easy_question", {"used_easy_questions": used_easy_questions}, function (data) {
 				current_question_id = data.question_info.question_id;
 				used_easy_questions.push(current_question_id);
-				$('#question_text').html(data.question_info.question_text);
-				$('#answer_A').html(data.question_info.question_answerA);
-				$('#answer_B').html(data.question_info.question_answerB);
-				$('#answer_C').html(data.question_info.question_answerC);
-				$('#answer_D').html(data.question_info.question_answerD);
+                document.getElementById("question_text").innerHTML = data.question_info.question_text;
+                document.getElementById("answer_A").innerHTML = data.question_info.question_answerA;
+                document.getElementById("answer_B").innerHTML = data.question_info.question_answerB;
+                document.getElementById("answer_C").innerHTML = data.question_info.question_answerC;
+                document.getElementById("answer_D").innerHTML = data.question_info.question_answerD;
 			},
 				function (err) { console.log(err) });
 		}
