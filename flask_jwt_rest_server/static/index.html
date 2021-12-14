@@ -8,49 +8,73 @@
     <body>
 
 	<script>
-		function send_form(){
-			$.post("/open_api/login", { "firstname":$('#fname').val(), "password":$('#password').val()},
-                       		function(data, textStatus) {
-					//this gets called when browser receives response from server
-					console.log(data.token);
-					//Set global JWT
-					jwt = data.token;
-					//make secure call with the jwt
-					get_books();
-				}, "json").fail( function(response) {
-					//this gets called if the server throws an error
-					console.log("error");
-					console.log(response);
-				});
-			return false;
-		}
+		var used_easy_questions = new Array();
+		var used_medium_questions = new Array();
+		var used_hard_questions = new Array();
+		var current_question_id;
+		var current_question_difficulty = "easy";
+		var current_prize_amount = 100;
 
 		function get_books(){
-			 //make secure call with the jwt
+			//make secure call with the jwt
 			secure_get_with_token("/secure_api/get_books", {} , function(data){
-					console.log("got books"); 
-					console.log(data); 
-					$('#buybook').show();
-					},
-                                                function(err){ console.log(err) });
+			console.log("got books"); 
+			console.log(data); 
+			$('#buybook').show();
+			},
+            function(err){ console.log(err) });
 		}
-                function buy_book(book_id){
-                         //make secure call with the jwt
-                        secure_get_with_token("/secure_api/get_books", {"book_id" : book_id} , function(data){console.log("got books"); console.log(data)},
-                                                function(err){ console.log(err) });
-                }
+
+        function buy_book(book_id){
+			//make secure call with the jwt
+			secure_get_with_token("/secure_api/get_books", {"book_id" : book_id} , function(data){console.log("got books"); console.log(data)},
+			function(err){ console.log(err) });
+		}
+
+		function initial_game_load() {
+			document.getElementById("welcome_screen").style.display = "none";
+			document.getElementById("main_game_screen").style.display = "inline";
+			get_easy_question();
+		}
+
+		function get_easy_question() {
+			secure_post_with_token("/secure_api/get_easy_question", {}, function (data) {
+				current_question_id = data.question_info.question_id;
+				$('#question_text').html(data.question_info.question_text);
+				$('#answer_A').html(data.question_info.question_answerA);
+				$('#answer_B').html(data.question_info.question_answerB);
+				$('#answer_C').html(data.question_info.question_answerC);
+                $('#answer_D').html(data.question_info.question_answerD);
+			},
+				function (err) { console.log(err) });
+		}
+
+		function verify_user_answer(user_answer) {
+			console.log(user_answer);
+        }
 
 	</script>
-            <div id="login">
-	    	<form >
-  			<label for="fname">First name:</label><br>
-  				<input type="text" id="fname" name="fname" value="John"><br>
-  			<label for="password">Password:</label><br>
-  				<input type="password" id="password" name="password" value="12212"><br><br>
-  			<input type="submit" value="Signup" onclick="return send_form();">
-		</form>
+        <div id="welcome_screen">
+			<h1>Welcome to "Would Anyone Like To Earn Six Figures?"!!!</h1>
+			<p>Press the button to start!</p>
+			<button id="load_game_menu" onclick="initial_game_load();" >Start Game</button>
 	    </div>
-	    <button id="buybook" onclick="buy_book(1234)" style="display:none" >Buy Book</button>
+		<div id="main_game_screen" style="display:none">
+			<p>Here is your question:</p>
+			<p id="question_text">DEFAULT QUESTION TEXT</p>
+			<br />
+			<form>
+				<input type="radio" id="answer_A" name="user_answer" value="DEFAULT_A">
+				<label for="answer_A">TEST_ANSWER_A_LABEL</label><br />
+				<input type="radio" id="answer_B" name="user_answer" value="DEFAULT_B">
+				<label for="answer_B">TEST_ANSWER_B_LABEL</label><br />
+				<input type="radio" id="answer_C" name="user_answer" value="DEFAULT_C">
+				<label for="answer_C">TEST_ANSWER_C_LABEL</label><br />
+				<input type="radio" id="answer_D" name="user_answer" value="DEFAULT_D">
+				<label for="answer_D">TEST_ANSWER_D_LABEL</label><br />
+				<input type="submit" value="Lock In" onclick="verify_user_answer(user_answer);" />
+			</form>
+		</div>
     </body>
 </html>
 
