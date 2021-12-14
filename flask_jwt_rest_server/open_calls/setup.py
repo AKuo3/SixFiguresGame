@@ -7,7 +7,9 @@ from tools.logging import logger
 def handle_request():
     logger.debug("Setup Handle Request")
 
-    token_string = '89b15cd3a509488789b15cd3a5094887'
+    token_dict = {
+    "sub": '89b15cd3a509488789b15cd3a5094887'
+                 }
 
-    return json_response(token = create_token(token_string))
+    return json_response(token = create_token(token_dict))
 
