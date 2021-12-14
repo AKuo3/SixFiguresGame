@@ -11,7 +11,7 @@
 		var used_easy_questions = new Array();
 		var used_medium_questions = new Array();
 		var used_hard_questions = new Array();
-		var current_question_id;
+		var current_question_id = 0;
 		var current_question_difficulty = "easy";
 		var current_prize_amount = 100;
 
@@ -38,7 +38,7 @@
 		}
 
 		function get_easy_question() {
-			secure_post_with_token("/secure_api/get_easy_question", {}, function (data) {
+			$.post("/secure_api/get_easy_question", function (data) {
 				current_question_id = data.question_info.question_id;
 				$('#question_text').html(data.question_info.question_text);
 				$('#answer_A').html(data.question_info.question_answerA);
