@@ -11,7 +11,6 @@ def handle_request():
     logger.debug("Get Easy Question Handle Request")
     cur = global_db_con.cursor()
     used_questions = request.form.getlist('used_easy_questions')
-    print(used_questions)
     numRows = 16
     random_question = -1
     checkedDupe = False
