@@ -10,7 +10,7 @@ from tools.logging import logger
 def handle_request():
     logger.debug("Get Pinnacle Question Handle Request")
     cur = global_db_con.cursor()
-    numRows = 16
+    numRows = 11
     random_question = random.randrange(1,numRows)
 
     cur.execute(f"select * from pinnacle_questions where id = '{random_question}';")
