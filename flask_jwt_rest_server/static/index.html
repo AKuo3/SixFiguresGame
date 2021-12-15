@@ -33,10 +33,10 @@
 				current_question_id = data.question_info.question_id;
 				used_easy_questions.push(current_question_id);
 				document.getElementById("question_text").innerHTML = data.question_info.question_text;
-				var a_button = $("answer_A");
-				var a_label = $("[for=" + a_button.attr("id") + "]");
-				a_label.text(data.question_info.question_answerA);
-                //document.getElementById("answer_A").innerHTML = data.question_info.question_answerA;
+				//var a_button = $("answer_A");
+				//var a_label = $("[for=" + a_button.attr("id") + "]");
+				//a_label.text(data.question_info.question_answerA);
+                document.getElementById("label_A").innerHTML = data.question_info.question_answerA;
                 document.getElementById("answer_B").innerHTML = data.question_info.question_answerB;
                 document.getElementById("answer_C").innerHTML = data.question_info.question_answerC;
                 document.getElementById("answer_D").innerHTML = data.question_info.question_answerD;
@@ -60,7 +60,7 @@
 			<br />
 			<form>
 				<input type="radio" id="answer_A" name="user_answer" value="DEFAULT_A">
-				<label for="answer_A">TEST_ANSWER_A_LABEL</label><br />
+				<label id="label_A">TEST_ANSWER_A_LABEL</label><br />
 				<input type="radio" id="answer_B" name="user_answer" value="DEFAULT_B">
 				<label for="answer_B">TEST_ANSWER_B_LABEL</label><br />
 				<input type="radio" id="answer_C" name="user_answer" value="DEFAULT_C">
