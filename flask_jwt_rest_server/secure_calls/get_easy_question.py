@@ -19,7 +19,9 @@ def handle_request():
 
     while(checkedDupe == False):
      random_question = random.randrange(1,numRows)
-     for x in used_questions:
+     for x in used_questions[0]:
+      print(x)
+      print(random_question)
       if(x == random_question): break
      else:
       checkedDupe = True
