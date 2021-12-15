@@ -186,7 +186,8 @@
 				document.getElementById("50/50_Button").disabled = true;
 				document.getElementById("used_50_50").style.display = "inline";
 
-                secure_get_with_token("/secure_api/apply_50_50", { "current_question_id": current_question_id, "current_question_difficulty": current_question_difficulty }, function (data) {
+				secure_get_with_token("/secure_api/apply_50_50", { "current_question_id": current_question_id, "current_question_difficulty": current_question_difficulty }, function (data) {
+					console.log(data.disabled_option_1);
 					switch (data.disabled_option_1) {
 						case 1:
 							document.getElementById("answer_A").style.visibility = "hidden";
@@ -204,6 +205,7 @@
 							console.log("Internal screaming!");
 					}
 
+                    console.log(data.disabled_option_2);
                     switch (data.disabled_option_2) {
                         case 1:
                             document.getElementById("answer_A").style.visibility = "hidden";
