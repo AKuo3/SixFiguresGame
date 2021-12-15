@@ -239,7 +239,14 @@
 			}
 
             function ask_audience() {
-                document.getElementById("Audience_Button").disabled = true;
+				document.getElementById("Audience_Button").disabled = true;
+
+                secure_get_with_token("/secure_api/ask_audience", { "current_question_id": current_question_id, "current_question_difficulty": current_question_difficulty }, function (data) {
+                    document.getElementById("friend_result").innerHTML = data.audience_answer;
+                },
+                    function (err) { console.log(err) });
+
+                document.getElementById("asked_audience").style.display = "inline";
             }
 
 		</script>
@@ -283,6 +290,7 @@
 			<p id="friend_result"></p>
 		</div>
 		<div id="asked_audience" style="display:none">
+			<p>The audience has voted...</p> <br />
 			<p id="audience_result"></p>
 		</div>
 	</body>
