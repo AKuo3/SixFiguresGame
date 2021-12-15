@@ -102,7 +102,7 @@
 			secure_get_with_token("/secure_api/verify_answer", { "current_question_id": current_question_id, "user_answer": user_answer, "current_question_difficulty": current_question_difficulty }, function (data) {
 				if (data.user_correct == true) {
 					document.getElementById("correct_or_not_text").innerHTML = "You were right!";
-					if (current_question_number == 14) { //user has won
+                    if (current_question_number == 14 || current_question_difficulty === "pinnacle") { //user has won
 						document.getElementById("millionaire_celebration").style.display = "inline";
                         document.getElementById("continue_button").style.display = "none";
 					}
@@ -120,14 +120,7 @@
 		}
 
 		function increment_and_check_prize() {
-            console.log(current_question_number);
-            current_question_number++;
-            console.log(current_question_number);
             console.log(current_prize_amount);
-            current_prize_amount = prize_order[current_question_number];
-            document.getElementById("dollar_amount").innerHTML = current_prize_amount;
-			document.getElementById("new_prize").innerHTML = current_prize_amount;
-
 			if (current_question_number == 4) { //user has hit medium checkpoint, update difficulty & save minimum prize
 				minimum_prize_amount = current_prize_amount[current_question_number];
 				current_question_difficulty = "medium";
@@ -139,15 +132,15 @@
 			else if (current_question_number == 13) { //user is on million dollar question
 				current_question_difficulty = "pinnacle";
 			}
-			/*
+			
             console.log(current_question_number);
 			current_question_number++;
 			console.log(current_question_number);
-            console.log(current_prize_amount);
 			current_prize_amount = prize_order[current_question_number];
+            console.log(current_prize_amount);
 			document.getElementById("dollar_amount").innerHTML = current_prize_amount;
             document.getElementById("new_prize").innerHTML = current_prize_amount;
-			*/
+			
 		}
 
 		function setup_next_question() {
