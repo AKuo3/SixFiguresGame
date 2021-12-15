@@ -15,6 +15,7 @@ def handle_request():
     disabled_answer_1 = None
     disabled_answer_2 = None
     indexed_answer = None
+    error = False
 
     if current_question_difficulty == "easy":
         cur.execute(f"select * from easy_questions where id = '{question_id}';")
