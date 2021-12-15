@@ -68,7 +68,7 @@
 			<p>For <span id="dollar_amount"></span>, here is your question:</p>
 			<p id="question_text">DEFAULT QUESTION TEXT</p>
 			<br />
-			<form>
+			<form action="verify_user_answer(user_answer);">
 				<input type="radio" id="answer_A" name="user_answer" value="A">
 				<label id="label_A">TEST_ANSWER_A_LABEL</label><br />
 				<input type="radio" id="answer_B" name="user_answer" value="B">
@@ -77,7 +77,7 @@
 				<label id="label_C">TEST_ANSWER_C_LABEL</label><br />
 				<input type="radio" id="answer_D" name="user_answer" value="D">
 				<label id="label_D">TEST_ANSWER_D_LABEL</label><br />
-				<input type="submit" value="Lock In" onclick="verify_user_answer(user_answer);" />
+				<input type="submit" value="Lock In"/>
 			</form>
 		</div>
 		<div id="answer_checker_screen" style="display:none">
