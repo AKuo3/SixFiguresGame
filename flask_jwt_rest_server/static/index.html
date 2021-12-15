@@ -11,7 +11,7 @@
 		var used_easy_questions = new Array();
 		var used_medium_questions = new Array();
 		var used_hard_questions = new Array();
-		var current_question_id = 0; //internal id of question
+		var current_question_id = 0; //database id of question
 		var current_question_difficulty = "easy";
 		var current_question_number = 0;
         var prize_order = ["$100", "$200", "$300", "$500", "$1,000", "$2,000", "$4,000", "$8,000", "$16,000", "$32,000", "$64,000", "125,000", "$250,000","$500,000","$1 Million"];
@@ -33,7 +33,6 @@
 			var easy_questions_list = JSON.stringify(used_easy_questions);
 			secure_post_with_token("/secure_api/get_easy_question", { "used_easy_questions": easy_questions_list }, function (data) {
 				current_question_id = data.question_info.question_id;
-				console.log(data.question_info.question_id);
 				used_easy_questions.push(current_question_id);
 				document.getElementById("question_text").innerHTML = data.question_info.question_text;
 				document.getElementById("label_A").innerHTML = data.question_info.question_answerA;
@@ -43,6 +42,47 @@
 			},
 				function (err) { console.log(err) });
 		}
+
+        function get_medium_question() {
+            var medium_questions_list = JSON.stringify(used_medium_questions);
+            secure_post_with_token("/secure_api/get_medium_question", { "used_medium_questions": medium_questions_list }, function (data) {
+                current_question_id = data.question_info.question_id;
+                used_medium_questions.push(current_question_id);
+                document.getElementById("question_text").innerHTML = data.question_info.question_text;
+                document.getElementById("label_A").innerHTML = data.question_info.question_answerA;
+                document.getElementById("label_B").innerHTML = data.question_info.question_answerB;
+                document.getElementById("label_C").innerHTML = data.question_info.question_answerC;
+                document.getElementById("label_D").innerHTML = data.question_info.question_answerD;
+            },
+                function (err) { console.log(err) });
+        }
+
+        function get_hard_question() {
+            var hard_questions_list = JSON.stringify(used_hard_questions);
+            secure_post_with_token("/secure_api/get_hard_question", { "used_hard_questions": hard_questions_list }, function (data) {
+                current_question_id = data.question_info.question_id;
+                used_hard_questions.push(current_question_id);
+                document.getElementById("question_text").innerHTML = data.question_info.question_text;
+                document.getElementById("label_A").innerHTML = data.question_info.question_answerA;
+                document.getElementById("label_B").innerHTML = data.question_info.question_answerB;
+                document.getElementById("label_C").innerHTML = data.question_info.question_answerC;
+                document.getElementById("label_D").innerHTML = data.question_info.question_answerD;
+            },
+                function (err) { console.log(err) });
+        }
+
+        function get_pinnacle_question() {
+            secure_post_with_token("/secure_api/get_pinnacle_question", {}, function (data) {
+                current_question_id = data.question_info.question_id;
+                document.getElementById("question_text").innerHTML = data.question_info.question_text;
+                document.getElementById("label_A").innerHTML = data.question_info.question_answerA;
+                document.getElementById("label_B").innerHTML = data.question_info.question_answerB;
+                document.getElementById("label_C").innerHTML = data.question_info.question_answerC;
+                document.getElementById("label_D").innerHTML = data.question_info.question_answerD;
+            },
+                function (err) { console.log(err) });
+        }
+
 
 		function verify_user_answer() {
             document.getElementById("main_game_screen").style.display = "none";
@@ -82,24 +122,39 @@
 		function increment_and_check_prize() {
 			if (current_question_number == 4) { //user has hit medium checkpoint, update difficulty & save minimum prize
 				minimum_prize_amount = current_prize_amount[current_question_number];
-				//current_question_difficulty = "medium";
+				current_question_difficulty = "medium";
 			}
 			else if (current_question_number == 9) { //user has hit hard checkpoint
 				minimum_prize_amount = current_prize_amount[current_question_number];
-				//current_question_difficulty = "hard";
+				current_question_difficulty = "hard";
 			}
-			else if (current_question_number + 1 == 14) { //user is on million dollar question
-				//current_question_difficulty = "pinnacle";
+			else if (current_question_number == 13) { //user is on million dollar question
+				current_question_difficulty = "pinnacle";
             }
 			current_question_number++;
 			current_prize_amount = prize_order[current_question_number];
 			document.getElementById("dollar_amount").innerHTML = current_prize_amount;
-            document.getElementById("new_prize").innerHTML = current_prize_amount;
+            //document.getElementById("new_prize").innerHTML = current_prize_amount;
 		}
 
 		function setup_next_question() {
 			increment_and_check_prize();
-			get_easy_question();
+			if (current_question_difficulty === "easy") {
+				get_easy_question();
+			}
+			else if (current_question_difficulty === "medium") {
+				get_medium_question();
+			}
+			else if (current_question_difficulty === "hard") {
+				get_hard_question();
+			}
+			else if (current_question_difficulty === "pinnacle") {
+				get_pinnacle_question();
+			}
+			else {
+				get_easy_question();
+				console.log("Something went wrong! Reverting to easy questions...");
+            }
             document.getElementById("answer_checker_screen").style.display = "none";
             document.getElementById("main_game_screen").style.display = "inline";
         }
@@ -128,7 +183,7 @@
 		</div>
 		<div id="answer_checker_screen" style="display:none">
 			<h1 id="correct_or_not_text">DEFAULT CORRECT TEXT</h1> <br />
-			<p id="encouragement">You're now playing for <span id="new_prize"></span>, good luck!</p> <br />
+			<p id="encouragement">You're now playing for <span id="dollar_amount"></span>, good luck!</p> <br />
 			<p id="consolation" style="display:none">You only won <span id="consolation_prize"></span>, better luck next time! Refresh to play again...</p>
 			<input id="continue_button" type="button" value="Continue..." onclick="setup_next_question();" /> <br />
 			<h1 id="millionare_celebration" style="display:none">YOU ARE A MILLIONAIRE!!!</h1> <br />

@@ -12,7 +12,7 @@ def handle_request():
     cur = global_db_con.cursor()
     used_questions = request.form.getlist('used_easy_questions')
     print(used_questions)
-    numRows = 9
+    numRows = 16
     random_question = -1
     checkedDupe = False
 
