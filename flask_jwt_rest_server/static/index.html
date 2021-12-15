@@ -120,6 +120,14 @@
 		}
 
 		function increment_and_check_prize() {
+            console.log(current_question_number);
+            current_question_number++;
+            console.log(current_question_number);
+            console.log(current_prize_amount);
+            current_prize_amount = prize_order[current_question_number];
+            document.getElementById("dollar_amount").innerHTML = current_prize_amount;
+			document.getElementById("new_prize").innerHTML = current_prize_amount;
+
 			if (current_question_number == 4) { //user has hit medium checkpoint, update difficulty & save minimum prize
 				minimum_prize_amount = current_prize_amount[current_question_number];
 				current_question_difficulty = "medium";
@@ -130,14 +138,16 @@
 			}
 			else if (current_question_number == 13) { //user is on million dollar question
 				current_question_difficulty = "pinnacle";
-            }
+			}
+			/*
+            console.log(current_question_number);
 			current_question_number++;
 			console.log(current_question_number);
             console.log(current_prize_amount);
 			current_prize_amount = prize_order[current_question_number];
-            console.log(current_question_number);
 			document.getElementById("dollar_amount").innerHTML = current_prize_amount;
             document.getElementById("new_prize").innerHTML = current_prize_amount;
+			*/
 		}
 
 		function setup_next_question() {
