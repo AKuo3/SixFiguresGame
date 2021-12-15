@@ -87,6 +87,7 @@
 		function verify_user_answer() {
             document.getElementById("main_game_screen").style.display = "none";
 			var user_answer;
+			console.log(current_question_number);
 			if (document.getElementById("answer_A").checked) {
 				user_answer = "a";
 			}
@@ -102,6 +103,7 @@
 			secure_get_with_token("/secure_api/verify_answer", { "current_question_id": current_question_id, "user_answer": user_answer, "current_question_difficulty": current_question_difficulty }, function (data) {
 				if (data.user_correct == true) {
 					document.getElementById("correct_or_not_text").innerHTML = "You were right!";
+                    console.log(current_question_number);
 					if (current_question_number == 14) { //user has won
 						document.getElementById("millionaire_celebration").style.display = "inline";
                         document.getElementById("continue_button").style.display = "none";
