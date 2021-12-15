@@ -27,7 +27,8 @@
 			});
             document.getElementById("welcome_screen").style.display = "none";
             document.getElementById("main_game_screen").style.display = "inline";
-            document.getElementById("dollar_amount").innerHTML = current_prize_amount;
+			document.getElementById("dollar_amount").innerHTML = current_prize_amount;
+            document.getElementById("new_prize").innerHTML = prize_order[next_question_number];
 		}
 
 		function get_easy_question() {
@@ -105,7 +106,8 @@
 					document.getElementById("correct_or_not_text").innerHTML = "You were right!";
                     if (current_question_number == 14 || current_question_difficulty === "pinnacle") { //user has won
 						document.getElementById("millionaire_celebration").style.display = "inline";
-                        document.getElementById("continue_button").style.display = "none";
+						document.getElementById("continue_button").style.display = "none";
+                        document.getElementById("encouragement").style.display = "none";
 					}
 				}
 				else {
