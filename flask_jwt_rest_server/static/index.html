@@ -29,17 +29,15 @@
 		}
 
 		function get_easy_question() {
-			secure_post_with_token("/secure_api/get_easy_question", {"used_easy_questions": used_easy_questions}, function (data) {
+			secure_post_with_token("/secure_api/get_easy_question", { "used_easy_questions": used_easy_questions }, function (data) {
 				current_question_id = data.question_info.question_id;
+				console.log(data.question_info.question_id);
 				used_easy_questions.push(current_question_id);
 				document.getElementById("question_text").innerHTML = data.question_info.question_text;
-				//var a_button = $("answer_A");
-				//var a_label = $("[for=" + a_button.attr("id") + "]");
-				//a_label.text(data.question_info.question_answerA);
-                document.getElementById("label_A").innerHTML = data.question_info.question_answerA;
-                document.getElementById("answer_B").innerHTML = data.question_info.question_answerB;
-                document.getElementById("answer_C").innerHTML = data.question_info.question_answerC;
-                document.getElementById("answer_D").innerHTML = data.question_info.question_answerD;
+				document.getElementById("label_A").innerHTML = data.question_info.question_answerA;
+                document.getElementById("label_B").innerHTML = data.question_info.question_answerB;
+                document.getElementById("label_C").innerHTML = data.question_info.question_answerC;
+                document.getElementById("label_D").innerHTML = data.question_info.question_answerD;
 			},
 				function (err) { console.log(err) });
 		}
@@ -59,14 +57,14 @@
 			<p id="question_text">DEFAULT QUESTION TEXT</p>
 			<br />
 			<form>
-				<input type="radio" id="answer_A" name="user_answer" value="DEFAULT_A">
+				<input type="radio" id="answer_A" name="user_answer" value="A">
 				<label id="label_A">TEST_ANSWER_A_LABEL</label><br />
-				<input type="radio" id="answer_B" name="user_answer" value="DEFAULT_B">
-				<label for="answer_B">TEST_ANSWER_B_LABEL</label><br />
-				<input type="radio" id="answer_C" name="user_answer" value="DEFAULT_C">
-				<label for="answer_C">TEST_ANSWER_C_LABEL</label><br />
-				<input type="radio" id="answer_D" name="user_answer" value="DEFAULT_D">
-				<label for="answer_D">TEST_ANSWER_D_LABEL</label><br />
+				<input type="radio" id="answer_B" name="user_answer" value="B">
+				<label id="label_B">TEST_ANSWER_B_LABEL</label><br />
+				<input type="radio" id="answer_C" name="user_answer" value="C">
+				<label id="label_C">TEST_ANSWER_C_LABEL</label><br />
+				<input type="radio" id="answer_D" name="user_answer" value="D">
+				<label id="label_D">TEST_ANSWER_D_LABEL</label><br />
 				<input type="submit" value="Lock In" onclick="verify_user_answer(user_answer);" />
 			</form>
 		</div>
