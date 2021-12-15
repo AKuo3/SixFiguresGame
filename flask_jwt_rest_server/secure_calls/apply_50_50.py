@@ -50,7 +50,5 @@ def handle_request():
         while disabled_answer_2 == indexed_answer or disabled_answer_2 == disabled_answer_1:
             disabled_answer_2 = random.randrange(1,5)
 
-        print(disabled_answer_1)
-        print(disabled_answer_2)
 
     return json_response(disabled_option_1 = disabled_answer_1,disabled_option_2 = disabled_answer_2)
