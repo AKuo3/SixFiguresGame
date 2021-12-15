@@ -14,12 +14,12 @@ def handle_request():
     print(used_questions)
     #cur.execute(f"select count(*) from easy_questions;")
     numRows = 9
-    random_question = random.randrange(1,numRows)
+    random_question = -1
     checkedDupe = False
 
     while(checkedDupe == False):
      random_question = random.randrange(1,numRows)
-     for x in used_questions[0]:
+     for x in used_questions:
       print(x)
       print(random_question)
       if(x == random_question): break
