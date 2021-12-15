@@ -131,6 +131,10 @@
 					next_question_number++;
 				}
 
+                current_question_number++;
+                current_prize_amount = prize_order[current_question_number];
+                document.getElementById("dollar_amount").innerHTML = current_prize_amount;
+
 				if (current_question_number == 4) { //user has hit medium checkpoint, update difficulty & save minimum prize
 					minimum_prize_amount = current_prize_amount[current_question_number];
 					current_question_difficulty = "medium";
@@ -143,9 +147,6 @@
 					current_question_difficulty = "pinnacle";
 				}
 
-				current_question_number++;
-				current_prize_amount = prize_order[current_question_number];
-				document.getElementById("dollar_amount").innerHTML = current_prize_amount;
 				if (current_question_number == 14) {
 					document.getElementById("new_prize").innerHTML = "$1 Million";
 				}
