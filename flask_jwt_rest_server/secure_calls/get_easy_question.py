@@ -13,15 +13,14 @@ def handle_request():
     used_questions = request.form.getlist('used_easy_questions')
     print(used_questions)
     #cur.execute(f"select count(*) from easy_questions;")
-    numRows = 5
+    numRows = 9
     random_question = random.randrange(1,numRows)
     checkedDupe = False
 
     while(checkedDupe == False):
+     random_question = random.randrange(1,numRows)
      for x in used_questions:
-      if(x == random_question):
-       random_question = random.randrange(1,numRows)
-       break
+      if(x == random_question): break
      else:
       checkedDupe = True
 
