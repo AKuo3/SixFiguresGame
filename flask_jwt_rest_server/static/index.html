@@ -242,7 +242,7 @@
 				document.getElementById("Audience_Button").disabled = true;
 
                 secure_get_with_token("/secure_api/ask_audience", { "current_question_id": current_question_id, "current_question_difficulty": current_question_difficulty }, function (data) {
-                    document.getElementById("friend_result").innerHTML = data.audience_answer;
+                    document.getElementById("audience_result").innerHTML = data.audience_answer;
                 },
                     function (err) { console.log(err) });
 
