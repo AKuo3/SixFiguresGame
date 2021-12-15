@@ -11,12 +11,9 @@ def handle_request():
     logger.debug("Verify Answer Handle Request")
     cur = global_db_con.cursor()
     question_id = request.args.get("current_question_id")
-    print(request.args.get("current_question_id"))
-    print(question_id)
     user_answer = request.args.get("user_answer")
-    print(request.args.get("user_answer"))
-    print(user_answer)
     current_question_difficulty = request.args.get("current_question_difficulty")
+    print(current_question_difficulty)
     error = False
     user_right = None
 

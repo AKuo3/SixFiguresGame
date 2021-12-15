@@ -10,7 +10,8 @@ from tools.logging import logger
 def handle_request():
     logger.debug("Get Easy Question Handle Request")
     cur = global_db_con.cursor()
-    used_questions = request.args;
+    used_questions = request.args
+    print(used_questions)
     #cur.execute(f"select count(*) from easy_questions;")
     numRows = 5
     random_question = random.randrange(1,numRows)

@@ -11,11 +11,12 @@
 		var used_easy_questions = new Array();
 		var used_medium_questions = new Array();
 		var used_hard_questions = new Array();
-		var current_question_id = 0;
+		var current_question_id = 0; //internal id of question
 		var current_question_difficulty = "easy";
 		var current_question_number = 0;
-        var prize_order = ["$500", "$1,000", "$2,000", "$3,000", "$5,000", "$7,000", "$10,000", "$20,000", "$30,000", "$50,000", "$100,000", "$250,000", "$500,000","$1 Million"];
+        var prize_order = ["$100", "$200", "$300", "$500", "$1,000", "$2,000", "$4,000", "$8,000", "$16,000", "$32,000", "$64,000", "125,000", "$250,000","$500,000","$1 Million"];
 		var current_prize_amount = prize_order[0];
+		var minimum_prize_amount = "$0";
 
 		function initial_game_load() {
 			$.post("/open_api/setup", {}, function (data) {
@@ -29,7 +30,8 @@
 		}
 
 		function get_easy_question() {
-			secure_post_with_token("/secure_api/get_easy_question", { "used_easy_questions": used_easy_questions }, function (data) {
+			var easy_questions_list = JSON.stringify(used_easy_questions);
+			secure_post_with_token("/secure_api/get_easy_question", { "used_easy_questions": easy_questions_list }, function (data) {
 				current_question_id = data.question_info.question_id;
 				console.log(data.question_info.question_id);
 				used_easy_questions.push(current_question_id);
@@ -43,8 +45,7 @@
 		}
 
 		function verify_user_answer() {
-            document.getElementById("welcome_screen").style.display = "none";
-			document.getElementById("answer_checker_screen").style.display = "inline";
+            document.getElementById("main_game_screen").style.display = "none";
 			var user_answer;
 			if (document.getElementById("answer_A").checked) {
 				user_answer = "a";
@@ -61,14 +62,41 @@
 			secure_get_with_token("/secure_api/verify_answer", { "current_question_id": current_question_id, "user_answer": user_answer, "current_question_difficulty": current_question_difficulty }, function (data) {
 				if (data.user_correct == true) {
 					document.getElementById("correct_or_not_text").innerHTML = "You were right!";
+					if (current_question_number == 14) { //user has won
+						document.getElementById("millionaire_celebration").style.display = "inline";
+                        document.getElementById("continue_button").style.display = "none";
+					}
 				}
 				else {
                     document.getElementById("correct_or_not_text").innerHTML = "You were wrong...";
 				}
-				document.getElementById("loading").style.display = "none";
-                document.getElementById("correct_or_not_text").style.display = "inline";
             },
-                function (err) { console.log(err) });
+				function (err) { console.log(err) });
+            document.getElementById("answer_checker_screen").style.display = "inline";
+		}
+
+		function increment_and_check_prize() {
+			if (current_question_number == 4) { //user has hit medium checkpoint, update difficulty & save minimum prize
+				minimum_prize_amount = current_prize_amount[current_question_number];
+				//current_question_difficulty = "medium";
+			}
+			else if (current_question_number == 9) { //user has hit hard checkpoint
+				minimum_prize_amount = current_prize_amount[current_question_number];
+				//current_question_difficulty = "hard";
+			}
+			else if (current_question_number + 1 == 14) { //user is on million dollar question
+				//current_question_difficulty = "pinnacle";
+            }
+			current_question_number++;
+			current_prize_amount[current_question_number];
+            document.getElementById("dollar_amount").innerHTML = current_prize_amount;
+		}
+
+		function setup_next_question() {
+			increment_and_check_prize();
+			get_easy_question();
+            document.getElementById("answer_checker_screen").style.display = "none";
+            document.getElementById("main_game_screen").style.display = "inline";
         }
 
 	</script>
@@ -94,8 +122,9 @@
 			</form>
 		</div>
 		<div id="answer_checker_screen" style="display:none">
-			<p id="loading">Loading...</p>
-			<p id="correct_or_not_text" style="display:none">DEFAULT CORRECT TEXT</p> <br />
+			<h id="correct_or_not_text">DEFAULT CORRECT TEXT</h> <br />
+			<input id="continue_button" type="button" value="Continue..." onclick="setup_next_question();" /> <br />
+			<h id="millionare_celebration" style="display:none">YOU ARE A MILLIONAIRE!!!</h> <br />
 		</div>
     </body>
 </html>
