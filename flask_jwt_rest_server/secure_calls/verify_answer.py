@@ -8,32 +8,39 @@ global_db_con = get_db()
 from tools.logging import logger
 
 def handle_request():
-    #todo: implement
-    logger.debug("Get Easy Question Handle Request")
+    logger.debug("Verify Answer Handle Request")
     cur = global_db_con.cursor()
-    used_questions = request.args.get("used_questions")
-    cur.execute(f"select count(*) from easy_questions;")
-    numRows = cur.fetchall()
-    random_question = random.randrange(1,numRows)
-    checkedDupe = False
+    question_id = request.args.get("current_question_id")
+    print(request.args.get("current_question_id"))
+    print(question_id)
+    user_answer = request.args.get("user_answer")
+    print(request.args.get("user_answer"))
+    print(user_answer)
+    current_question_difficulty = request.args.get("current_question_difficulty")
+    error = False
+    user_right = None
 
-    while(checkedDupe == False):
-     for x in used_questions:
-      if(x == random_question):
-       random_question = random.randrange(1,numRows)
-       break
-     else:
-      checkedDupe = True
+    if current_question_difficulty == "easy":
+        cur.execute(f"select * from easy_questions where id = '{question_id}';")
+    elif current_question_difficulty == "medium":
+        cur.execute(f"select * from medium_questions where id = '{question_id}';")
+    elif current_question_difficulty == "hard":
+        cur.execute(f"select * from hard_questions where id = '{question_id}';")
+    elif current_question_difficulty == "pinnacle":
+        cur.execute(f"select * from pinnacle_questions where id = '{question_id}';")
+    else:
+        error = True
 
-    cur.execute(f"select * from easy_questions where id = '{random_question}';")
-    question = cur.fetchone()
-    question_id = question[0]
-    question_text = question[1]
-    question_answerA = question[2]
-    question_answerB = question[3]
-    question_answerC = question[4]
-    question_answerD = question[5]
-    question_correctAnswer = question[6]
-    print("Successfully got easy question.")
+    if error == True:
+        print("Something bad happened!!")
+    else:
+        server_question = cur.fetchone()
+        correct_answer = server_question[6]
+        if correct_answer == user_answer:
+            user_right = True
+        else:
+            user_right = False
+        print("Successfully checked question.")
 
-    return json_response(question_info = {'question_id': question_id,'question_text':question_text,'question_answerA': question_answerA,'question_answerB':question_answerB,'question_answerC':question_answerC,'question_answerD':question_answerD,'question_correctAnswer':question_correctAnswer})
+
+    return json_response(user_correct = user_right,right_answer = correct_answer)

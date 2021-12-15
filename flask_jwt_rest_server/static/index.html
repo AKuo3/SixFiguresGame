@@ -18,14 +18,14 @@
 		var current_prize_amount = prize_order[0];
 
 		function initial_game_load() {
-			document.getElementById("welcome_screen").style.display = "none";
-			document.getElementById("main_game_screen").style.display = "inline";
-			document.getElementById("dollar_amount").innerHTML = current_prize_amount;
 			$.post("/open_api/setup", {}, function (data) {
 				console.log(data.token);
 				jwt = data.token;
                 get_easy_question();
 			});
+            document.getElementById("welcome_screen").style.display = "none";
+            document.getElementById("main_game_screen").style.display = "inline";
+            document.getElementById("dollar_amount").innerHTML = current_prize_amount;
 		}
 
 		function get_easy_question() {
@@ -43,7 +43,19 @@
 		}
 
 		function verify_user_answer(user_answer) {
-			console.log(user_answer);
+            document.getElementById("welcome_screen").style.display = "none";
+            document.getElementById("answer_checker_screen").style.display = "inline";
+			secure_get_with_token("/secure_api/verify_answer", { "current_question_id": current_question_id, "user_answer": user_answer, "current_question_difficulty": current_question_difficulty }, function (data) {
+				if (data.user_correct == true) {
+					document.getElementById("correct_or_not_text").innerHTML = "You were right!";
+				}
+				else {
+                    document.getElementById("correct_or_not_text").innerHTML = "You were wrong...";
+				}
+				document.getElementById("loading").style.display = "none";
+                document.getElementById("correct_or_not_text").style.display = "inline";
+            },
+                function (err) { console.log(err) });
         }
 
 	</script>
@@ -67,6 +79,10 @@
 				<label id="label_D">TEST_ANSWER_D_LABEL</label><br />
 				<input type="submit" value="Lock In" onclick="verify_user_answer(user_answer);" />
 			</form>
+		</div>
+		<div id="answer_checker_screen" style="display:none">
+			<p id="loading">Loading...</p>
+			<p id="correct_or_not_text" style="display:none">DEFAULT CORRECT TEXT</p> <br />
 		</div>
     </body>
 </html>
