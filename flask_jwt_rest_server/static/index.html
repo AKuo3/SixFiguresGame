@@ -14,6 +14,7 @@
 		var current_question_id = 0; //database id of question
 		var current_question_difficulty = "easy";
 		var current_question_number = 0;
+		var next_question_number = 1;
         var prize_order = ["$100", "$200", "$300", "$500", "$1,000", "$2,000", "$4,000", "$8,000", "$16,000", "$32,000", "$64,000", "125,000", "$250,000","$500,000","$1 Million"];
 		var current_prize_amount = prize_order[0];
 		var minimum_prize_amount = "$0";
@@ -124,10 +125,12 @@
 			if (current_question_number == 4) { //user has hit medium checkpoint, update difficulty & save minimum prize
 				minimum_prize_amount = current_prize_amount[current_question_number];
 				current_question_difficulty = "medium";
+				next_question_number++;
 			}
 			else if (current_question_number == 9) { //user has hit hard checkpoint
 				minimum_prize_amount = current_prize_amount[current_question_number];
 				current_question_difficulty = "hard";
+                next_question_number++;
 			}
 			else if (current_question_number == 13) { //user is on million dollar question
 				current_question_difficulty = "pinnacle";
@@ -139,7 +142,12 @@
 			current_prize_amount = prize_order[current_question_number];
             console.log(current_prize_amount);
 			document.getElementById("dollar_amount").innerHTML = current_prize_amount;
-            document.getElementById("new_prize").innerHTML = current_prize_amount;
+			if (current_question_number == 14) {
+				document.getElementById("new_prize").innerHTML = "$1 Million";
+			}
+			else {
+                document.getElementById("new_prize").innerHTML = prize_order[next_question_number];
+            }
 			
 		}
 
@@ -192,7 +200,7 @@
 			<p id="encouragement">You're now playing for <span id="new_prize"></span>, good luck!</p> <br />
 			<p id="consolation" style="display:none">You only won <span id="consolation_prize"></span>, better luck next time! Refresh to play again...</p>
 			<input id="continue_button" type="button" value="Continue..." onclick="setup_next_question();" /> <br />
-			<h1 id="millionare_celebration" style="display:none">YOU ARE A MILLIONAIRE!!!</h1> <br />
+			<h1 id="millionaire_celebration" style="display:none">YOU ARE A MILLIONAIRE!!!</h1> <br />
 		</div>
     </body>
 </html>
