@@ -134,7 +134,7 @@
 			current_question_number++;
 			current_prize_amount = prize_order[current_question_number];
 			document.getElementById("dollar_amount").innerHTML = current_prize_amount;
-            //document.getElementById("new_prize").innerHTML = current_prize_amount;
+            document.getElementById("new_prize").innerHTML = current_prize_amount;
 		}
 
 		function setup_next_question() {
@@ -183,7 +183,7 @@
 		</div>
 		<div id="answer_checker_screen" style="display:none">
 			<h1 id="correct_or_not_text">DEFAULT CORRECT TEXT</h1> <br />
-			<p id="encouragement">You're now playing for <span id="dollar_amount"></span>, good luck!</p> <br />
+			<p id="encouragement">You're now playing for <span id="new_prize"></span>, good luck!</p> <br />
 			<p id="consolation" style="display:none">You only won <span id="consolation_prize"></span>, better luck next time! Refresh to play again...</p>
 			<input id="continue_button" type="button" value="Continue..." onclick="setup_next_question();" /> <br />
 			<h1 id="millionare_celebration" style="display:none">YOU ARE A MILLIONAIRE!!!</h1> <br />
