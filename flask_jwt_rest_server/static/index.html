@@ -179,10 +179,10 @@ b<!DOCTYPE html>
                 document.getElementById("answer_C").style.visibility = "visible";
 				document.getElementById("answer_D").style.visibility = "visible";
 
-				document.getElementById("answer_A").checked = false;
-                document.getElementById("answer_B").checked = false;
-                document.getElementById("answer_C").checked = false;
-                document.getElementById("answer_D").checked = false;
+				document.getElementById("answer_A").removeAttribute("checked");
+                document.getElementById("answer_B").removeAttribute("checked");
+                document.getElementById("answer_C").removeAttribute("checked");
+                document.getElementById("answer_D").removeAttribute("checked");
 
 				document.getElementById("answer_checker_screen").style.display = "none";
 				document.getElementById("main_game_screen").style.display = "inline";
