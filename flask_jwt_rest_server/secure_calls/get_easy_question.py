@@ -12,7 +12,6 @@ def handle_request():
     cur = global_db_con.cursor()
     used_questions = request.form.getlist('used_easy_questions')
     print(used_questions)
-    #cur.execute(f"select count(*) from easy_questions;")
     numRows = 9
     random_question = -1
     checkedDupe = False
@@ -20,8 +19,6 @@ def handle_request():
     while(checkedDupe == False):
      random_question = random.randrange(1,numRows)
      for x in used_questions[0]:
-      print(x)
-      print(random_question)
       if(x == random_question): break
      else:
       checkedDupe = True
