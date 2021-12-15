@@ -8,13 +8,13 @@ global_db_con = get_db()
 from tools.logging import logger
 
 def handle_request():
-    logger.debug("Verify Answer Handle Request")
+    logger.debug("50/50 Handle Request")
     cur = global_db_con.cursor()
     question_id = request.args.get("current_question_id")
-    user_answer = request.args.get("user_answer")
     current_question_difficulty = request.args.get("current_question_difficulty")
-    error = False
-    user_right = None
+    disabled_answer_1 = None
+    disabled_answer_2 = None
+    indexed_answer = None
 
     if current_question_difficulty == "easy":
         cur.execute(f"select * from easy_questions where id = '{question_id}';")
@@ -31,12 +31,22 @@ def handle_request():
         print("Something bad happened!!")
     else:
         server_question = cur.fetchone()
-        correct_answer = server_question[6]
-        if correct_answer == user_answer:
-            user_right = True
-        else:
-            user_right = False
-        print("Successfully checked question.")
+        correct_answer = server_question[6] #1 = a, 2 = b, 3 = c, 4 = d
+        if correct_answer == "a":
+            indexed_answer = 1
+        elif correct_answer == "b":
+            indexed_answer = 2
+        elif correct_answer == "c":
+            indexed_answer = 3
+        elif correct_answer == "d":
+            indexed_answer = 4
 
+        disabled_answer_1 = random.randrange(1,5)
+        while disabled_answer_1 == indexed_answer:
+            disabled_answer_1 = random.randrange(1,5)
 
-    return json_response(user_correct = user_right,right_answer = correct_answer)
+        disabled_answer_2 = random.randrange(1,5)
+        while disabled_answer_2 == indexed_answer or disabled_answer_2 == disabled_answer_1:
+            disabled_answer_1 = random.randrange(1,5)
+
+    return json_response(disabled_option_1 = disabled_answer_1,disabled_option_2 = disabled_answer_2)
